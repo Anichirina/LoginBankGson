@@ -1,4 +1,6 @@
 import com.github.javafaker.Faker;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -6,6 +8,8 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 import java.util.Locale;
+
+import static io.restassured.RestAssured.given;
 
 public class Generator {
     public static RequestSpecification requestSpecification = new RequestSpecBuilder()
@@ -17,7 +21,7 @@ public class Generator {
             .build();
 
     public static void makeRequest(Registration registration) {
-        RestAssured.given()
+        given()
                 .spec(requestSpecification)
                 .body(registration)
                 .when()
@@ -63,5 +67,32 @@ public class Generator {
         Registration registration = new Registration(login, password, status);
         makeRequest(registration);
         return new Registration("petya", password, status);
+    }
+    public static Registration registrationOfActiveUser() {
+        Registration registration = generateAutharizationForActiveUser();
+        Gson gsonBuilder = new GsonBuilder().create();
+        String jsonClientData = gsonBuilder.toJson(registration);
+        given()
+                .spec(requestSpecification)
+                .body(jsonClientData)
+                .when()
+                .post("/api/system/users")
+                .then()
+                .statusCode(200);
+        return registration;
+    }
+
+    public static Registration registrationOfBlockedUser() {
+        Registration registration = generateAutharizationForBlockedUser();
+        Gson gsonBuilder = new GsonBuilder().create();
+        String jsonClientData = gsonBuilder.toJson(registration);
+        given()
+                .spec(requestSpecification)
+                .body(jsonClientData)
+                .when()
+                .post("/api/system/users")
+                .then()
+                .statusCode(200);
+        return registration;
     }
 }
