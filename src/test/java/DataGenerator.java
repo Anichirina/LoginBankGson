@@ -1,18 +1,15 @@
 import com.github.javafaker.Faker;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.util.Locale;
 
 import static io.restassured.RestAssured.given;
+import static java.lang.String.valueOf;
 
 public class DataGenerator {
     private static final RequestSpecification requestSpec = new RequestSpecBuilder()
@@ -64,18 +61,19 @@ public class DataGenerator {
             // TODO: создать пользователя user используя методы getRandomLogin(), getRandomPassword()
             //  и параметр status
             RegistrationDto user = new RegistrationDto(getRandomLogin(), getRandomPassword(), status);
-            sendRequest(user);
+
             return user;
         }
 
         public static RegistrationDto getRegisteredUser(String status) {
             // TODO: объявить переменную registeredUser и присвоить ей значение возвращённое getUser(status).
             // Послать запрос на регистрацию пользователя с помощью вызова sendRequest(registeredUser)
-            RegistrationDto registeredUser = new RegistrationDto ();
+            RegistrationDto registeredUser = new RegistrationDto(String(valueOf(getUser(status))));
             sendRequest(registeredUser);
             return registeredUser;
         }
     }
+
 
     @Value
        public static class RegistrationDto {
