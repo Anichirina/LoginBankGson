@@ -68,31 +68,31 @@ public class Generator {
         makeRequest(registration);
         return new Registration("petya", password, status);
     }
-    public static Registration registrationOfActiveUser() {
-        Registration registration = generateAutharizationForActiveUser();
-        Gson gsonBuilder = new GsonBuilder().create();
-        String jsonClientData = gsonBuilder.toJson(registration);
-        given()
-                .spec(requestSpecification)
-                .body(jsonClientData)
-                .when()
-                .post("/api/system/users")
-                .then()
-                .statusCode(200);
-        return registration;
-    }
-
-    public static Registration registrationOfBlockedUser() {
-        Registration registration = generateAutharizationForBlockedUser();
-        Gson gsonBuilder = new GsonBuilder().create();
-        String jsonClientData = gsonBuilder.toJson(registration);
-        given()
-                .spec(requestSpecification)
-                .body(jsonClientData)
-                .when()
-                .post("/api/system/users")
-                .then()
-                .statusCode(200);
-        return registration;
-    }
+//    public static Registration registrationOfActiveUser() {
+//        Registration registrationOfActiveUser = new Registration();
+//        Gson gsonBuilder = new GsonBuilder().create();
+//        String jsonClientData = gsonBuilder.toJson(registrationOfActiveUser);
+//        given()
+//                .spec(requestSpecification)
+//                .body(jsonClientData)
+//                .when()
+//                .post("/api/system/users")
+//                .then()
+//                .statusCode(200);
+//        return registrationOfActiveUser;
+//    }
+//
+//    public static Registration registrationOfBlockedUser() {
+//        Registration registration = generateAutharizationForBlockedUser();
+//        Gson gsonBuilder = new GsonBuilder().create();
+//        String jsonClientData = gsonBuilder.toJson(registration);
+//        given()
+//                .spec(requestSpecification)
+//                .body(jsonClientData)
+//                .when()
+//                .post("/api/system/users")
+//                .then()
+//                .statusCode(200);
+//        return registration;
+//    }
 }
