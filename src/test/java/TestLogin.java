@@ -10,23 +10,14 @@ import static com.codeborne.selenide.Selenide.open;
 import static io.restassured.RestAssured.given;
 
 public class TestLogin {
-    private static RequestSpecification requestSpec = new RequestSpecBuilder()
+
+
+
     @BeforeEach
     void setup() {
         open("http://localhost:9999");
     }
-    @BeforeAll
-    static void setUpAll() {
-        // сам запрос
-        given() // "дано"
-                .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(new DataGenerator.RegistrationDto("vasya", "password", "active"))
-                // передаём в теле объект, который будет преобразован в JSON
-                .when() // "когда"
-                .post("/api/system/users") // на какой путь, относительно BaseUri отправляем запрос
-                .then() // "тогда ожидаем"
-                .statusCode(200); // код 200 OK
-    }
+
 
     @Test
     @DisplayName("Should successfully login with active registered user")
