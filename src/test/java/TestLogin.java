@@ -1,9 +1,13 @@
 import com.codeborne.selenide.Condition;
+import com.github.javafaker.Faker;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Locale;
+
+import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -25,8 +29,8 @@ public class TestLogin {
         //  данными зарегистрированного активного пользователя, для заполнения полей формы используйте
         //  пользователя registeredUser
 
-        $("[data-test-id='login'] input").setValue(DataGenerator.getRandomLogin());
-        $("[data-test-id='password'] input").setValue(DataGenerator.getRandomPassword());
+        $("[data-test-id='login'] input").setValue(registeredUser.getLogin());
+        $("[data-test-id='password'] input").setValue(registeredUser.getPassword());
         $(withText("Продолжить")).click();
         $(withText("Личный кабинет")).shouldBe(Condition.visible);
     }
@@ -39,10 +43,10 @@ public class TestLogin {
 
         // TODO: добавить логику теста в рамках которого будет выполнена попытка входа в личный кабинет
         //  незарегистрированного пользователя, для заполнения полей формы используйте пользователя notRegisteredUser
-        $("[data-test-id='login'] input").setValue(DataGenerator.getRandomLogin());
-        $("[data-test-id='password'] input").setValue(DataGenerator.getRandomPassword());
+        $("[data-test-id='login'] input").setValue(notRegisteredUser.getLogin());
+        $("[data-test-id='password'] input").setValue(notRegisteredUser.getPassword());
         $(withText("Продолжить")).click();
-        $(withText("Пользователь заблокирован")).shouldBe(Condition.visible);
+        $(withText("Неверно указан логин или пароль")).shouldBe(Condition.visible);
     }
 
     @Test
@@ -52,9 +56,10 @@ public class TestLogin {
 
         // TODO: добавить логику теста в рамках которого будет выполнена попытка входа в личный кабинет,
         //  заблокированного пользователя, для заполнения полей формы используйте пользователя blockedUser
-        $("[data-test-id='login'] input").setValue(DataGenerator.getRandomLogin());
-        $("[data-test-id='password'] input").setValue(DataGenerator.getRandomPassword());
+              $("[data-test-id='login'] input").setValue(blockedUser.getLogin());
+        $("[data-test-id='password'] input").setValue(blockedUser.getPassword());
         $(withText("Продолжить")).click();
+        $(withText("Пользователь заблокирован")).shouldBe(Condition.visible);
     }
 
     @Test
@@ -65,9 +70,10 @@ public class TestLogin {
         // TODO: добавить логику теста в рамках которого будет выполнена попытка входа в личный кабинет с неверным
         //  логином, для заполнения поля формы "Логин" используйте переменную wrongLogin,
         //  "Пароль" - пользователя registeredUser
-        $("[data-test-id='login'] input").setValue(DataGenerator.getRandomLogin());
-        $("[data-test-id='password'] input").setValue(DataGenerator.getRandomPassword());
+               $("[data-test-id='login'] input").setValue(wrongLogin);
+        $("[data-test-id='password'] input").setValue(registeredUser.getPassword());
         $(withText("Продолжить")).click();
+        $(withText("Неверно указан логин или пароль")).shouldBe(Condition.visible);
 
     }
 
@@ -79,9 +85,10 @@ public class TestLogin {
         // TODO: добавить логику теста в рамках которого будет выполнена попытка входа в личный кабинет с неверным
         //  паролем, для заполнения поля формы "Логин" используйте пользователя registeredUser,
         //  "Пароль" - переменную wrongPassword
-        $("[data-test-id='login'] input").setValue(DataGenerator.getRandomLogin());
-        $("[data-test-id='password'] input").setValue(DataGenerator.getRandomPassword());
+        $("[data-test-id='login'] input").setValue(registeredUser.getLogin());
+        $("[data-test-id='password'] input").setValue(wrongPassword);
         $(withText("Продолжить")).click();
+        $(withText("Неверно указан логин или пароль")).shouldBe(Condition.visible);
 
     }
 }

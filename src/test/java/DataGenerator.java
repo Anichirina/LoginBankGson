@@ -9,7 +9,6 @@ import lombok.Value;
 import java.util.Locale;
 
 import static io.restassured.RestAssured.given;
-import static java.lang.String.valueOf;
 
 public class DataGenerator {
     private static final RequestSpecification requestSpec = new RequestSpecBuilder()
@@ -28,7 +27,7 @@ public class DataGenerator {
         // TODO: отправить запрос на указанный в требованиях path, передав в body запроса объект user
         //  и не забудьте передать подготовленную спецификацию requestSpec.
         //  Пример реализации метода показан в условии к задаче.Registration registrationOfActiveUser = new Registration()
-                 given() // "дано"
+        given() // "дано"
                 .spec(requestSpec)
                 // указываем, какую спецификацию используем
                 .body(new Gson().toJson(user)) // передаём в теле объект, который будет преобразован в JSON
@@ -68,7 +67,9 @@ public class DataGenerator {
         public static RegistrationDto getRegisteredUser(String status) {
             // TODO: объявить переменную registeredUser и присвоить ей значение возвращённое getUser(status).
             // Послать запрос на регистрацию пользователя с помощью вызова sendRequest(registeredUser)
-            RegistrationDto registeredUser = new RegistrationDto(String(valueOf(getUser(status))));
+
+            RegistrationDto registeredUser = new RegistrationDto(getRandomLogin(), getRandomPassword(), status);
+            getUser(status);
             sendRequest(registeredUser);
             return registeredUser;
         }
@@ -76,11 +77,10 @@ public class DataGenerator {
 
 
     @Value
-       public static class RegistrationDto {
+    public static class RegistrationDto {
         String login;
         String password;
         String status;
-
 
 
     }
